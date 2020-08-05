@@ -9,21 +9,23 @@
 /* Begin PBXBuildFile section */
 		FAD3CD3E24DAA0CA00812587 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3CD3D24DAA0CA00812587 /* AppDelegate.swift */; };
 		FAD3CD4024DAA0CA00812587 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3CD3F24DAA0CA00812587 /* SceneDelegate.swift */; };
-		FAD3CD4224DAA0CA00812587 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3CD4124DAA0CA00812587 /* ContentView.swift */; };
 		FAD3CD4424DAA0CD00812587 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAD3CD4324DAA0CD00812587 /* Assets.xcassets */; };
 		FAD3CD4724DAA0CD00812587 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAD3CD4624DAA0CD00812587 /* Preview Assets.xcassets */; };
 		FAD3CD4A24DAA0CD00812587 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD3CD4824DAA0CD00812587 /* LaunchScreen.storyboard */; };
+		FAD3CD5224DAB77C00812587 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3CD5124DAB77C00812587 /* CardView.swift */; };
+		FAD3CD5424DAB93D00812587 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3CD5324DAB93D00812587 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		FAD3CD3A24DAA0CA00812587 /* Slots Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Slots Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAD3CD3D24DAA0CA00812587 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAD3CD3F24DAA0CA00812587 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		FAD3CD4124DAA0CA00812587 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FAD3CD4324DAA0CD00812587 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAD3CD4624DAA0CD00812587 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FAD3CD4924DAA0CD00812587 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FAD3CD4B24DAA0CD00812587 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FAD3CD5124DAB77C00812587 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		FAD3CD5324DAB93D00812587 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,13 +58,14 @@
 		FAD3CD3C24DAA0CA00812587 /* Slots Demo */ = {
 			isa = PBXGroup;
 			children = (
+				FAD3CD5324DAB93D00812587 /* ContentView.swift */,
 				FAD3CD3D24DAA0CA00812587 /* AppDelegate.swift */,
 				FAD3CD3F24DAA0CA00812587 /* SceneDelegate.swift */,
-				FAD3CD4124DAA0CA00812587 /* ContentView.swift */,
 				FAD3CD4324DAA0CD00812587 /* Assets.xcassets */,
 				FAD3CD4824DAA0CD00812587 /* LaunchScreen.storyboard */,
 				FAD3CD4B24DAA0CD00812587 /* Info.plist */,
 				FAD3CD4524DAA0CD00812587 /* Preview Content */,
+				FAD3CD5124DAB77C00812587 /* CardView.swift */,
 			);
 			path = "Slots Demo";
 			sourceTree = "<group>";
@@ -148,7 +151,8 @@
 			files = (
 				FAD3CD3E24DAA0CA00812587 /* AppDelegate.swift in Sources */,
 				FAD3CD4024DAA0CA00812587 /* SceneDelegate.swift in Sources */,
-				FAD3CD4224DAA0CA00812587 /* ContentView.swift in Sources */,
+				FAD3CD5424DAB93D00812587 /* ContentView.swift in Sources */,
+				FAD3CD5224DAB77C00812587 /* CardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +290,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Slots Demo/Preview Content\"";
+				DEVELOPMENT_TEAM = J2C6GVHVQ9;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Slots Demo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -305,6 +310,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Slots Demo/Preview Content\"";
+				DEVELOPMENT_TEAM = J2C6GVHVQ9;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Slots Demo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
