@@ -58,6 +58,7 @@
 		FAD3CD3C24DAA0CA00812587 /* Slots Demo */ = {
 			isa = PBXGroup;
 			children = (
+				FAD3CD5324DAB93D00812587 /* ContentView.swift */,
 				FAD3CD3D24DAA0CA00812587 /* AppDelegate.swift */,
 				FAD3CD3F24DAA0CA00812587 /* SceneDelegate.swift */,
 				FAD3CD4324DAA0CD00812587 /* Assets.xcassets */,
@@ -65,7 +66,6 @@
 				FAD3CD4B24DAA0CD00812587 /* Info.plist */,
 				FAD3CD4524DAA0CD00812587 /* Preview Content */,
 				FAD3CD5124DAB77C00812587 /* CardView.swift */,
-				FAD3CD5324DAB93D00812587 /* ContentView.swift */,
 			);
 			path = "Slots Demo";
 			sourceTree = "<group>";
@@ -288,7 +288,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Slots Demo/Preview Content\"";
 				DEVELOPMENT_TEAM = J2C6GVHVQ9;
@@ -300,7 +299,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Anna.Slots-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -310,7 +308,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Slots Demo/Preview Content\"";
 				DEVELOPMENT_TEAM = J2C6GVHVQ9;
@@ -322,7 +319,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Anna.Slots-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
