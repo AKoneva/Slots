@@ -10,12 +10,12 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var symbols = ["apple","star","cherry"]
-    
+    @State var win = false
     @State private var numbers = Array(repeating: 0, count: 9)
     @State private var backgrounds = Array(repeating: Color.white, count: 9)
     @State private var credits = 1000
     private var betAmount = 5
-   
+    
     var body: some View {
         
         ZStack {
@@ -28,8 +28,8 @@ struct ContentView: View {
             
             Rectangle().foregroundColor(Color(red: 228/255, green: 195/255, blue: 76/255)).rotationEffect(Angle(degrees: 50)) .edgesIgnoringSafeArea(.all)
             
-                    
-  VStack{
+            
+            VStack {
                 Spacer()
                 //Title
                 HStack{
@@ -44,13 +44,16 @@ struct ContentView: View {
                 
                 Text("Credits: \(credits)")
                     .padding(.all, 10)
-                    .background(Color.white.opacity(0.5))
+                    .background(win ? Color.green.opacity(0.5) : Color.white.opacity(0.5))
                     .cornerRadius(20)
+                    .scaleEffect(win ? 1.2 : 1)
+                    .animation(.spring(response: 0.7, dampingFraction: 0.5))
                 
                 Spacer()
                 //Cards
-    VStack{ Spacer()
-                    HStack{
+                VStack {
+                    Spacer()
+                    HStack {
                         
                         Spacer()
                         
@@ -64,7 +67,7 @@ struct ContentView: View {
                         
                     }
                     
-                    HStack{
+                    HStack {
                         
                         Spacer()
                         
@@ -78,8 +81,8 @@ struct ContentView: View {
                         
                     }
                     
-                    HStack{
-                        
+                    HStack {
+                         
                         Spacer()
                         
                         CardView(symbol:$symbols[numbers[6]], background: $backgrounds[6])
@@ -90,169 +93,194 @@ struct ContentView: View {
                         
                         Spacer()
                         
-                   }
+                    }
                     
-         Spacer() }
-                //buttons
-    HStack (spacing: 55){
-        VStack{
-                    Button.init(action: {
-                        if self.credits <= 0 {
-                            Text("YOU DONT HAVE CREDITS")
-                        }
-                        else {self.processResults(IsMax: false)}
+                    Spacer()
+                    
+                }
+                
+                HStack (spacing: 55){
+                    VStack{
+                        Button(action: {
+                            if self.credits <= 0 {
+                                Text("YOU DONT HAVE CREDITS")
+                            }
+                            else {
+                                self.processResults(IsMax: false)
+                                
+                            }
+                        }, label: {
+                            Text("Spin")
+                                .bold()
+                                .foregroundColor(Color.white)
+                                .padding(.all,10)
+                                .padding([.leading , .trailing], 30)
+                                .background(Color.pink)
+                                .cornerRadius(20)
+                        })
                         
-                    })
-                        { Text("Spin")
-                            .bold()
-                            .foregroundColor(Color.white)
-                            .padding(.all,10)
-                            .padding([.leading , .trailing], 30)
-                            .background(Color.pink)
-                            .cornerRadius(20)
-                            
-                           
-                        }
-        Text("\(betAmount) credits").padding(.top, 10).font(.footnote)
-        
-        }
-         VStack{ Button.init(action: {
-           if self.credits <= 0 {
-                Text("YOU DONT HAVE CREDITS")
+                        Text("\(betAmount) credits")
+                            .padding(.top, 10)
+                            .font(.footnote)
+                        
+                    }
+                    VStack {
+                        Button(action: {
+                            if self.credits <= 0 {
+                                Text("YOU DONT HAVE CREDITS")
+                            }
+                            else {
+                                self.processResults(IsMax: true)
+                                
+                            }
+                        }, label: {
+                            Text("Max Spin")
+                                .bold()
+                                .foregroundColor(Color.white)
+                                .padding(.all,10)
+                                .padding([.leading , .trailing], 30)
+                                .background(Color.pink)
+                                .cornerRadius(20)
+                        })
+                        
+                        Text("\(betAmount*5) credits")
+                            .padding(.top, 10)
+                            .font(.footnote)
+                        
+                    }
+                    
+                }
+                Spacer()
+                
             }
-            else {self.processResults(IsMax: true)}
-                           
-                       })
-                           { Text("Max Spin")
-                               .bold()
-                               .foregroundColor(Color.white)
-                               .padding(.all,10)
-                               .padding([.leading , .trailing], 30)
-                               .background(Color.pink)
-                               .cornerRadius(20)
-                               
-                              
-                           }
-           Text("\(betAmount*5) credits").padding(.top, 10).font(.footnote)
-           
+            
+        }
+        .animation(.easeOut)
+        
+    }
+    func processResults(IsMax:Bool) {
+        
+        //Set back backgrounds to white
+        self.backgrounds = self.backgrounds.map{_ in Color.white}
+        
+        if IsMax {
+            //Spin all cards
+            self.numbers =  self.numbers.map{_ in  Int.random(in: 0...self.symbols.count - 1 ) }
+                
+        }
+        else {
+            //Spin centre
+            // change the images
+            self.numbers[3] = Int.random(in: 0...self.symbols.count - 1 )
+            self.numbers[4] = Int.random(in: 0...self.symbols.count - 1 )
+            self.numbers[5] = Int.random(in: 0...self.symbols.count - 1 )
+            
         }
         
-   }
-//end HStack
-                Spacer()}
-             
-        }
-      
-       
-  
-    }
-    func processResults(IsMax:Bool){
-         
-         //Set back backgrounds to white
-         self.backgrounds = self.backgrounds.map{_ in Color.white}
-         
-         if IsMax {
-             //Spin all cards
-             self.numbers =  self.numbers.map{_ in  Int.random(in: 0...self.symbols.count - 1 ) }
-         }
-         else{
-             //Spin centre
-             // change the images
-             self.numbers[3] = Int.random(in: 0...self.symbols.count - 1 )
-             self.numbers[4] = Int.random(in: 0...self.symbols.count - 1 )
-             self.numbers[5] = Int.random(in: 0...self.symbols.count - 1 )
-             
-         }
-         
         processWin(IsMax: IsMax)
-         
-     }
-     
-     
-     func processWin(IsMax:Bool){
-         var matches = 0
-            if !IsMax{
-             //processing for single spin
-             if self.numbers[3] == self.numbers[4] && self.numbers[4] == self.numbers[5]{
-                 //won
-                 matches += 1
-                 //Update backgrounds to green
-                 self.backgrounds[3] = Color.green
-                 self.backgrounds[4] = Color.green
-                 self.backgrounds[5] = Color.green
-                 
-             }
-         }
-         else{
-             // processing for maxSpin
-             //Top checking
-             
-             if self.numbers[0] == self.numbers[1] && self.numbers[1] == self.numbers[2]{
-                 //won
-                 matches += 1
-                 //Update backgrounds to green
-                self.backgrounds[0] = Color.green
-                 self.backgrounds[1] = Color.green
-                 self.backgrounds[2] = Color.green
+        
+    }
+    
+    
+    func processWin(IsMax:Bool) {
+        var matches = 0
+        if !IsMax {
+            //processing for single spin
+            if self.numbers[3] == self.numbers[4] && self.numbers[4] == self.numbers[5]{
+                //won
+                matches += 1
+                //Update backgrounds to green
+                withAnimation(.spring()) {
+                    self.backgrounds[3] = Color.green
+                    self.backgrounds[4] = Color.green
+                    self.backgrounds[5] = Color.green
                 }
-             //Middle checking
-             if self.numbers[3] == self.numbers[4] && self.numbers[4] == self.numbers[5]{
-                            //won
-                            matches += 1
-                            //Update backgrounds to green
-                            self.backgrounds[3] = Color.green
-                            self.backgrounds[4] = Color.green
-                            self.backgrounds[5] = Color.green
-             }
-             //bottom checking
-             
-            if self.numbers[6] == self.numbers[7] && self.numbers[7] == self.numbers[8]{
-                 //won
-                 matches += 1
-                 //Update backgrounds to green
-                 self.backgrounds[6] = Color.green
-                 self.backgrounds[7] = Color.green
-                 self.backgrounds[8] = Color.green
                 
-             }
-             // diagonal top left to bottom right
-             
-           if self.numbers[0] == self.numbers[4] && self.numbers[4] == self.numbers[8]{
-                 //won
-                 matches += 1
-                 //Update backgrounds to green
-                 self.backgrounds[0] = Color.green
-                 self.backgrounds[4] = Color.green
-                 self.backgrounds[8] = Color.green
-                
-             }
-             //diagonal top right to bottom left
-             
-          if self.numbers[2] == self.numbers[4] && self.numbers[4] == self.numbers[6]{
-                 //won
-                 matches += 1
-                 //Update backgrounds to green
-                 self.backgrounds[2] = Color.green
-                 self.backgrounds[4] = Color.green
-                 self.backgrounds[6] = Color.green
-                }
+            }
         }
-             // check matches and distrbute credits
-             if matches>0 {
-                 //at least 1 wins
-                 self.credits += matches * (betAmount * 2)
-             }
-             else if !IsMax {
-                 // 0 wins, single spin
-                 self.credits -= betAmount
-             }
-             else{
-                 // 0 wins,max spin
-                 self.credits -= betAmount * 5
-             }
-         }
-         
-     }
+        else {
+            // processing for maxSpin
+            //Top checking
+            
+            if self.numbers[0] == self.numbers[1] && self.numbers[1] == self.numbers[2]{
+                //won
+                matches += 1
+                //Update backgrounds to green
+                withAnimation(.spring()) {
+                self.backgrounds[0] = Color.green
+                self.backgrounds[1] = Color.green
+                self.backgrounds[2] = Color.green
+                }
+            }
+            //Middle checking
+            if self.numbers[3] == self.numbers[4] && self.numbers[4] == self.numbers[5]{
+                //won
+                matches += 1
+                //Update backgrounds to green
+                withAnimation(.spring()) {
+                self.backgrounds[3] = Color.green
+                self.backgrounds[4] = Color.green
+                self.backgrounds[5] = Color.green
+                }
+            }
+            //bottom checking
+            
+            if self.numbers[6] == self.numbers[7] && self.numbers[7] == self.numbers[8]{
+                //won
+                matches += 1
+                //Update backgrounds to green
+                withAnimation(.spring()) {
+                self.backgrounds[6] = Color.green
+                self.backgrounds[7] = Color.green
+                self.backgrounds[8] = Color.green
+                }
+                
+            }
+            // diagonal top left to bottom right
+            
+            if self.numbers[0] == self.numbers[4] && self.numbers[4] == self.numbers[8] {
+                //won
+                matches += 1
+                //Update backgrounds to green
+                withAnimation(.spring()) {
+                self.backgrounds[0] = Color.green
+                self.backgrounds[4] = Color.green
+                self.backgrounds[8] = Color.green
+                }
+                
+            }
+            //diagonal top right to bottom left
+            
+            if self.numbers[2] == self.numbers[4] && self.numbers[4] == self.numbers[6] {
+                //won
+                matches += 1
+                //Update backgrounds to green
+                withAnimation(.spring()) {
+                self.backgrounds[2] = Color.green
+                self.backgrounds[4] = Color.green
+                self.backgrounds[6] = Color.green
+                }
+            }
+        }
+        
+        win = false
+        // check matches and distrbute credits
+        if matches>0 {
+            win = true
+            //at least 1 wins
+            self.credits += matches * (betAmount * 2)
+        }
+        else if !IsMax {
+            // 0 wins, single spin
+            self.credits -= betAmount
+        }
+        else {
+            // 0 wins,max spin
+            self.credits -= betAmount * 5
+        }
+    }
+    
+}
 
 
 struct ContentView_Previews: PreviewProvider {
