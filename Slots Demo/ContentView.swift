@@ -9,277 +9,163 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var symbols = ["apple","star","cherry"]
-    @State var win = false
     @State private var numbers = Array(repeating: 0, count: 9)
+    
+    @State private var symbols = ["apple", "star", "cherry"]
     @State private var backgrounds = Array(repeating: Color.white, count: 9)
+    
     @State private var credits = 1000
+    @State private var showAlert = false
+    @State var win = false
+    
     private var betAmount = 5
     
     var body: some View {
-        
         ZStack {
-            
-            //background
-            
-            Rectangle()
-                .foregroundColor(Color( red: 200/255, green:143/255, blue: 32/255))
-                .edgesIgnoringSafeArea(.all)
-            
-            Rectangle().foregroundColor(Color(red: 228/255, green: 195/255, blue: 76/255)).rotationEffect(Angle(degrees: 50)) .edgesIgnoringSafeArea(.all)
-            
+            LinearGradient(gradient: Gradient(colors: [Color.yellow, Color.blue]), startPoint: .leading, endPoint: .trailing)
+                .ignoresSafeArea()
             
             VStack {
-                Spacer()
-                //Title
-                HStack{
-                    
-                    Image(systemName: "star.fill") .foregroundColor(.yellow)
-                    Text("SwiftUI Slots").bold().foregroundColor(.white)
-                    Image(systemName: "star.fill") .foregroundColor(.yellow)
-                    
-                } .scaleEffect(2)
-                Spacer()
-                //credits counter
+                Text("SwiftUI Slots")
+                    .bold()
+                    .foregroundColor(.white)
+                    .scaleEffect(3)
+                    .padding(.all, 35)
                 
                 Text("Credits: \(credits)")
-                    .padding(.all, 10)
+                    .padding()
                     .background(win ? Color.green.opacity(0.5) : Color.white.opacity(0.5))
                     .cornerRadius(20)
                     .scaleEffect(win ? 1.2 : 1)
-                    .animation(.spring(response: 0.7, dampingFraction: 0.5))
-                
                 Spacer()
-                //Cards
                 VStack {
-                    Spacer()
-                    HStack {
-                        
-                        Spacer()
-                        
-                        CardView(symbol:$symbols[numbers[0]], background: $backgrounds[0])
-                        
-                        CardView(symbol:$symbols[numbers[1]], background: $backgrounds[1])
-                        
-                        CardView(symbol:$symbols[numbers[2]], background: $backgrounds[2])
-                        
-                        Spacer()
-                        
+                    LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
+                        ForEach(0 ..< 9) { num in
+                            CardView(symbol: $symbols[numbers[num]], background: $backgrounds[num])
+                        }
                     }
-                    
-                    HStack {
-                        
-                        Spacer()
-                        
-                        CardView(symbol:$symbols[numbers[3]], background: $backgrounds[3])
-                        
-                        CardView(symbol:$symbols[numbers[4]], background: $backgrounds[4])
-                        
-                        CardView(symbol:$symbols[numbers[5]], background: $backgrounds[5])
-                        
-                        Spacer()
-                        
-                    }
-                    
-                    HStack {
-                         
-                        Spacer()
-                        
-                        CardView(symbol:$symbols[numbers[6]], background: $backgrounds[6])
-                        
-                        CardView(symbol:$symbols[numbers[7]], background: $backgrounds[7])
-                        
-                        CardView(symbol:$symbols[numbers[8]], background: $backgrounds[8])
-                        
-                        Spacer()
-                        
-                    }
-                    
-                    Spacer()
-                    
+                    .padding()
                 }
-                
-                HStack (spacing: 55){
-                    VStack{
-                        Button(action: {
+                Spacer()
+                HStack {
+                    VStack {
+                        Button {
                             if self.credits <= 0 {
-                                Text("YOU DONT HAVE CREDITS")
+                                showAlert.toggle()
+                            } else {
+                                randomCards(IsMax: false)
                             }
-                            else {
-                                self.processResults(IsMax: false)
-                                
-                            }
-                        }, label: {
+                        } label: {
                             Text("Spin")
                                 .bold()
-                                .foregroundColor(Color.white)
-                                .padding(.all,10)
-                                .padding([.leading , .trailing], 30)
-                                .background(Color.pink)
+                                .foregroundColor(.white)
+                                .padding()
+                                .padding(.horizontal)
+                                .background(.pink)
                                 .cornerRadius(20)
-                        })
-                        
+                        }
                         Text("\(betAmount) credits")
-                            .padding(.top, 10)
                             .font(.footnote)
-                        
                     }
+                    .padding()
                     VStack {
-                        Button(action: {
+                        Button {
                             if self.credits <= 0 {
-                                Text("YOU DONT HAVE CREDITS")
+                                showAlert.toggle()
+                            } else {
+                                randomCards(IsMax: true)
                             }
-                            else {
-                                self.processResults(IsMax: true)
-                                
-                            }
-                        }, label: {
+                        } label: {
                             Text("Max Spin")
                                 .bold()
-                                .foregroundColor(Color.white)
-                                .padding(.all,10)
-                                .padding([.leading , .trailing], 30)
-                                .background(Color.pink)
+                                .foregroundColor(.white)
+                                .padding()
+                                .padding(.horizontal)
+                                .background(.pink)
                                 .cornerRadius(20)
-                        })
-                        
-                        Text("\(betAmount*5) credits")
-                            .padding(.top, 10)
+                        }
+                        Text("\(betAmount * 5) credits")
                             .font(.footnote)
-                        
                     }
-                    
                 }
-                Spacer()
-                
+            }.alert(Text("Error"), isPresented: $showAlert) {
+                Text("Your error message goes here.")
             }
-            
         }
-        .animation(.easeOut)
-        
+
     }
-    func processResults(IsMax:Bool) {
-        
-        //Set back backgrounds to white
-        self.backgrounds = self.backgrounds.map{_ in Color.white}
+    
+    func randomCards(IsMax:Bool) {
+        self.backgrounds = self.backgrounds.map { _ in
+            Color.white
+        }
         
         if IsMax {
             //Spin all cards
-            self.numbers =  self.numbers.map{_ in  Int.random(in: 0...self.symbols.count - 1 ) }
-                
-        }
-        else {
+            self.numbers =  self.numbers.map { _ in
+                Int.random(in: 0...2 )
+            }
+        } else {
             //Spin centre
             // change the images
-            self.numbers[3] = Int.random(in: 0...self.symbols.count - 1 )
-            self.numbers[4] = Int.random(in: 0...self.symbols.count - 1 )
-            self.numbers[5] = Int.random(in: 0...self.symbols.count - 1 )
+            self.numbers[3] = Int.random(in: 0...2)
+            self.numbers[4] = Int.random(in: 0...2)
+            self.numbers[5] = Int.random(in: 0...2)
             
+            print(numbers[3], numbers[4], numbers[5])
         }
         
         processWin(IsMax: IsMax)
-        
     }
     
-    
-    func processWin(IsMax:Bool) {
+    func processSingleSpin(check: [Int]) -> Int {
         var matches = 0
-        if !IsMax {
-            //processing for single spin
-            if self.numbers[3] == self.numbers[4] && self.numbers[4] == self.numbers[5]{
-                //won
-                matches += 1
-                //Update backgrounds to green
-                withAnimation(.spring()) {
-                    self.backgrounds[3] = Color.green
-                    self.backgrounds[4] = Color.green
-                    self.backgrounds[5] = Color.green
-                }
-                
-            }
-        }
-        else {
-            // processing for maxSpin
-            //Top checking
+        if numbers[check[0]] == numbers[check[1]] && numbers[check[1]] == numbers[check[2]] {
+            matches += 1
             
-            if self.numbers[0] == self.numbers[1] && self.numbers[1] == self.numbers[2]{
-                //won
-                matches += 1
-                //Update backgrounds to green
-                withAnimation(.spring()) {
-                self.backgrounds[0] = Color.green
-                self.backgrounds[1] = Color.green
-                self.backgrounds[2] = Color.green
-                }
+            withAnimation(.spring()) {
+                backgrounds[check[0]] = Color.green
+                backgrounds[check[1]] = Color.green
+                backgrounds[check[2]] = Color.green
             }
-            //Middle checking
-            if self.numbers[3] == self.numbers[4] && self.numbers[4] == self.numbers[5]{
-                //won
-                matches += 1
-                //Update backgrounds to green
-                withAnimation(.spring()) {
-                self.backgrounds[3] = Color.green
-                self.backgrounds[4] = Color.green
-                self.backgrounds[5] = Color.green
-                }
-            }
-            //bottom checking
+            print(backgrounds)
             
-            if self.numbers[6] == self.numbers[7] && self.numbers[7] == self.numbers[8]{
-                //won
-                matches += 1
-                //Update backgrounds to green
-                withAnimation(.spring()) {
-                self.backgrounds[6] = Color.green
-                self.backgrounds[7] = Color.green
-                self.backgrounds[8] = Color.green
-                }
-                
-            }
-            // diagonal top left to bottom right
-            
-            if self.numbers[0] == self.numbers[4] && self.numbers[4] == self.numbers[8] {
-                //won
-                matches += 1
-                //Update backgrounds to green
-                withAnimation(.spring()) {
-                self.backgrounds[0] = Color.green
-                self.backgrounds[4] = Color.green
-                self.backgrounds[8] = Color.green
-                }
-                
-            }
-            //diagonal top right to bottom left
-            
-            if self.numbers[2] == self.numbers[4] && self.numbers[4] == self.numbers[6] {
-                //won
-                matches += 1
-                //Update backgrounds to green
-                withAnimation(.spring()) {
-                self.backgrounds[2] = Color.green
-                self.backgrounds[4] = Color.green
-                self.backgrounds[6] = Color.green
-                }
-            }
         }
-        
-        win = false
-        // check matches and distrbute credits
-        if matches>0 {
-            win = true
-            //at least 1 wins
-            self.credits += matches * (betAmount * 2)
-        }
-        else if !IsMax {
-            // 0 wins, single spin
-            self.credits -= betAmount
-        }
-        else {
-            // 0 wins,max spin
-            self.credits -= betAmount * 5
-        }
+        return matches
     }
     
+    
+    func processWin(IsMax: Bool) {
+        var matches = 0
+        win = false
+        
+        let middle = [3, 4, 5]
+        let top = [0, 1, 2]
+        let bottom = [6, 7, 8]
+        let diagonalTopLeftToBottomRight = [0, 4, 8]
+        let diagonalTopRightToBottomLeft = [2, 4, 6]
+        
+        if IsMax {
+                matches += processSingleSpin(check: top)
+                matches += processSingleSpin(check: middle)
+                matches += processSingleSpin(check: bottom)
+                matches += processSingleSpin(check: diagonalTopLeftToBottomRight)
+                matches += processSingleSpin(check: diagonalTopRightToBottomLeft)
+        } else {
+            matches += processSingleSpin(check: middle)
+        }
+        
+        if matches > 0 {
+            win = true
+            self.credits += matches * (betAmount * 2)
+        } else {
+            if IsMax {
+                self.credits -= betAmount * 5
+            } else {
+                self.credits -= betAmount
+            }
+        }
+    }
 }
 
 
